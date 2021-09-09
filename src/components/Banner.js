@@ -39,15 +39,20 @@ const Banner = () => {
   );
 };
 
-const AnimatedLetters = ({ title }) => (
+const AnimatedLetters = ({ title, disabled }) => (
   <motion.span
     className="row-title"
-    variants={banner}
+    variants={disabled ? null : banner}
     initial="initial"
     animate="animate"
   >
     {[...title].map((letter) => (
-      <motion.span variants={letterAnimation} className="row-letter">
+      <motion.span
+        variants={letterAnimation}
+        initial="initial"
+        animate="animate"
+        className="row-letter"
+      >
         {letter}
       </motion.span>
     ))}
@@ -60,12 +65,17 @@ const BannerRowTop = ({ title }) => {
       <div className="row-col">
         <AnimatedLetters title={title} />
       </div>
-      <div className="row-col">
+      <motion.div
+        className="row-col"
+        initial={{ opacity: 0, y: 80 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ease: "easeInOut", duration: 1, delay: 0.4 }}
+      >
         <span className="row-message">
           We are specialised in setting up the foundation of your brand and
           setting you up for success.
         </span>
-      </div>
+      </motion.div>
     </div>
   );
 };
@@ -73,10 +83,27 @@ const BannerRowTop = ({ title }) => {
 const BannerRowBottom = ({ title }) => {
   return (
     <div className={"banner-row center"}>
-      <div className="scroll">
-        <span>scroll</span>
-        <span>down</span>
-      </div>
+      <motion.div
+        className="scroll"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ ease: [0.6, 0.01, -0.05, 0.9], duration: 1, delay: 1 }}
+      >
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ ease: "easeInOut", duration: 1, delay: 1.8 }}
+        >
+          scroll
+        </motion.span>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ ease: "easeInOut", duration: 1, delay: 1.8 }}
+        >
+          down
+        </motion.span>
+      </motion.div>
       <AnimatedLetters title={title} />
     </div>
   );
@@ -86,10 +113,10 @@ const BannerRowCenter = ({ title, playMarquee }) => {
   return (
     <div className={`banner-row marquee  ${playMarquee && "animate"}`}>
       <div className="marquee__inner">
+        <AnimatedLetters title={title} disabled />
         <AnimatedLetters title={title} />
-        <AnimatedLetters title={title} />
-        <AnimatedLetters title={title} />
-        <AnimatedLetters title={title} />
+        <AnimatedLetters title={title} disabled />
+        <AnimatedLetters title={title} disabled />
       </div>
     </div>
   );
